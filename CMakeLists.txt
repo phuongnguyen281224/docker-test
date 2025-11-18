@@ -23,6 +23,8 @@ add_executable(${CMAKE_PROJECT_NAME}.elf ${SOURCES} ${STARTUP_SOURCES})
 set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/linker/linker.ld")
 set(CMAKE_EXE_LINKER_FLAGS "-nostdlib --specs=nosys.specs -Wl,-Map=${PROJECT_NAME}.map -Wl,--gc-sections -T ${LINKER_SCRIPT} ${COMMON_FLAGS}" CACHE INTERNAL "Linker flags" FORCE)
 
+add_executable(${CMAKE_PROJECT_NAME}.elf main.c gpio.c rcc.c startup_stm32f103c8t6.S)
+add_executable(${CMAKE_PROJECT_NAME}.elf main.c gpio.c startup_stm32f103c8t6.S)
 
 # Post-build steps
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME}.elf POST_BUILD
