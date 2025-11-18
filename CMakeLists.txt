@@ -7,7 +7,7 @@ project(stm32_project C)
 enable_language(C)
 
 # Executable
-add_executable(${CMAKE_PROJECT_NAME}.elf main.c startup_stm32f103c8t6.S)
+add_executable(${CMAKE_PROJECT_NAME}.elf main.c gpio.c startup_stm32f103c8t6.S)
 
 # Post-build steps
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME}.elf POST_BUILD
