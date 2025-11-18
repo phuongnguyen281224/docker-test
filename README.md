@@ -12,7 +12,9 @@ The current example code blinks the onboard LED connected to pin PC13.
 
 *   [Docker](https://docs.docker.com/get-docker/) installed on your system.
 
-### Setup and Build
+### Quick Build
+
+This project includes a convenient script to automate the entire build process.
 
 1.  **Clone the Repository:**
     ```bash
@@ -20,28 +22,14 @@ The current example code blinks the onboard LED connected to pin PC13.
     cd <repository_name>
     ```
 
-2.  **Build and Run the Docker Container:**
-    Open a terminal in the project's root directory and run the following command. This will build the Docker image and start a container in the background.
+2.  **Run the Build Script:**
+    Open a terminal in the project's root directory and execute the `run_build.sh` script. This command will automatically start the Docker environment and compile the project.
     ```bash
-    docker-compose up -d --build
+    ./run_build.sh
     ```
 
-3.  **Access the Container's Shell:**
-    ```bash
-    docker-compose exec stm32_dev /bin/bash
-    ```
-
-4.  **Build the Project:**
-    Inside the container's shell, create a build directory and run CMake and Make.
-    ```bash
-    mkdir build
-    cd build
-    cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake
-    make
-    ```
-
-5.  **Find the Output Files:**
-    The compiled firmware files (`.hex`, `.bin`, `.elf`) will be located in the `build` directory. You can now use a tool like OpenOCD or ST-Link to flash the `.bin` or `.hex` file to your STM32F103C8T6 board.
+3.  **Find the Output Files:**
+    The compiled firmware files (`.hex`, `.bin`, `.elf`) will be located in the `build/` directory. You can now use a tool like OpenOCD or ST-Link to flash the firmware to your STM32F103C8T6 board.
 
 ---
 
@@ -51,7 +39,9 @@ The current example code blinks the onboard LED connected to pin PC13.
 
 *   Đã cài đặt [Docker](https://docs.docker.com/get-docker/) trên máy tính của bạn.
 
-### Cài Đặt và Biên Dịch
+### Xây Dựng Nhanh
+
+Dự án này bao gồm một script tiện lợi để tự động hóa toàn bộ quá trình xây dựng.
 
 1.  **Clone Repository:**
     ```bash
@@ -59,25 +49,11 @@ The current example code blinks the onboard LED connected to pin PC13.
     cd <repository_name>
     ```
 
-2.  **Build và Chạy Docker Container:**
-    Mở một terminal trong thư mục gốc của dự án và chạy lệnh sau. Lệnh này sẽ build Docker image và khởi chạy một container ở chế độ nền.
+2.  **Chạy Script Xây Dựng:**
+    Mở một terminal trong thư mục gốc của dự án và thực thi script `run_build.sh`. Lệnh này sẽ tự động khởi chạy môi trường Docker và biên dịch dự án.
     ```bash
-    docker-compose up -d --build
+    ./run_build.sh
     ```
 
-3.  **Truy Cập Shell của Container:**
-    ```bash
-    docker-compose exec stm32_dev /bin/bash
-    ```
-
-4.  **Biên Dịch Dự Án:**
-    Bên trong shell của container, tạo một thư mục `build` và chạy CMake và Make.
-    ```bash
-    mkdir build
-    cd build
-    cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake
-    make
-    ```
-
-5.  **Tìm Các File Output:**
-    Các file firmware đã được biên dịch (`.hex`, `.bin`, `.elf`) sẽ nằm trong thư mục `build`. Bây giờ bạn có thể sử dụng một công cụ như OpenOCD hoặc ST-Link để nạp file `.bin` hoặc `.hex` vào board STM32F103C8T6 của bạn.
+3.  **Tìm Các File Output:**
+    Các file firmware đã được biên dịch (`.hex`, `.bin`, `.elf`) sẽ nằm trong thư mục `build/`. Bây giờ bạn có thể sử dụng một công cụ như OpenOCD hoặc ST-Link để nạp firmware vào board STM32F103C8T6 của bạn.
