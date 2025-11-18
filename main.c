@@ -17,6 +17,14 @@ int main(void) {
     GpioLed.PinConfig.GPIO_PinMode = GPIO_MODE_OUT_PP;
     GpioLed.PinConfig.GPIO_PinSpeed = GPIO_SPEED_2MHZ;
 
+    GPIO_Handle_t GpioLed;
+
+    // Configure the LED pin (PC13)
+    GpioLed.pGPIOx = GPIOC;
+    GpioLed.PinConfig.GPIO_PinNumber = GPIO_PIN_13;
+    GpioLed.PinConfig.GPIO_PinMode = GPIO_MODE_OUT_PP;
+    GpioLed.PinConfig.GPIO_PinSpeed = GPIO_SPEED_2MHZ;
+
     // Initialize the GPIO pin
     GPIO_Init(&GpioLed);
 
