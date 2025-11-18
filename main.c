@@ -1,12 +1,5 @@
-#include <stdint.h>
-
-// Register addresses
-#define RCC_BASE      0x40021000
-#define GPIOC_BASE    0x40011000
-
-#define RCC_APB2ENR   (*(volatile uint32_t *)(RCC_BASE + 0x18))
-#define GPIOC_CRH     (*(volatile uint32_t *)(GPIOC_BASE + 0x04))
-#define GPIOC_ODR     (*(volatile uint32_t *)(GPIOC_BASE + 0x0C))
+#include "gpio.h"
+#include "rcc.h"
 
 // Simple delay function
 void delay(volatile uint32_t count) {
@@ -14,24 +7,32 @@ void delay(volatile uint32_t count) {
 }
 
 int main(void) {
-    // Enable clock for GPIOC
-    // Bit 4 I/O port C clock enable
-    RCC_APB2ENR |= (1 << 4);
+    SystemClock_Config();
 
-    // Configure PC13 as output push-pull
-    // Clear CNF13 and MODE13 bits (bits 20-23)
-    GPIOC_CRH &= ~(0x0F << 20);
-    // Set MODE13 to 01 (Output mode, max speed 10 MHz)
-    // Set CNF13 to 00 (General purpose output push-pull)
-    GPIOC_CRH |= (0x01 << 20);
+    GPIO_Handle_t GpioLed;
+
+    // Configure the LED pin (PC13)
+    GpioLed.pGPIOx = GPIOC;
+    GpioLed.PinConfig.GPIO_PinNumber = GPIO_PIN_13;
+    GpioLed.PinConfig.GPIO_PinMode = GPIO_MODE_OUT_PP;
+    GpioLed.PinConfig.GPIO_PinSpeed = GPIO_SPEED_2MHZ;
+
+    // Initialize the GPIO pin
+    GPIO_Init(&GpioLed);
 
     while(1) {
-        // Turn LED on (drive pin low)
-        GPIOC_ODR &= ~(1 << 13);
+        // Turn LED on (Blue Pill LED is active low)
+        GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
         delay(500000);
 
-        // Turn LED off (drive pin high)
-        GPIOC_ODR |= (1 << 13);
+        // Turn LED off
+        GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
         delay(500000);
+
+        /*
+        // Example of using the toggle function
+        GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_13);
+        delay(500000);
+        */
     }
 }
