@@ -15,7 +15,8 @@ RUN apt-get update && \
     wget \
     unzip \
     gcc-arm-none-eabi \
-    binutils-arm-none-eabi
+    binutils-arm-none-eabi \
+    libnewlib-arm-none-eabi
 
 # Create a non-root user
 RUN groupadd --gid $USER_GID $USERNAME && \
