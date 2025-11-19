@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define __IO volatile
+
 /*
  * =================================================================================
  * Base addresses for memories
@@ -25,8 +27,11 @@
 /*
  * AHB Peripherals
  */
+#define DMA1_BASE             (AHBPERIPH_BASE + 0x0000U)
+#define DMA2_BASE             (AHBPERIPH_BASE + 0x0400U)
 #define RCC_BASE              (AHBPERIPH_BASE + 0x1000U)
 #define FLASH_R_BASE          (AHBPERIPH_BASE + 0x2000U) /*!< Flash registers base address */
+#define CRC_BASE              (AHBPERIPH_BASE + 0x3000U)
 
 /*
  * APB2 Peripherals
@@ -54,7 +59,12 @@
 #define USART3_BASE           (APB1PERIPH_BASE + 0x4800U)
 #define I2C1_BASE             (APB1PERIPH_BASE + 0x5400U)
 #define I2C2_BASE             (APB1PERIPH_BASE + 0x5800U)
+#define WWDG_BASE             (APB1PERIPH_BASE + 0x2C00U)
+#define IWDG_BASE             (APB1PERIPH_BASE + 0x3000U)
 #define SPI2_BASE             (APB1PERIPH_BASE + 0x3800U)
+#define RTC_BASE              (APB1PERIPH_BASE + 0x2800U)
+#define PWR_BASE              (APB1PERIPH_BASE + 0x7000U)
+#define BKP_BASE              (APB1PERIPH_BASE + 0x6C00U)
 
 /*
  * =================================================================================
@@ -131,6 +141,150 @@ typedef struct
   volatile uint32_t GTPR;
 } USART_TypeDef;
 
+typedef struct
+{
+  volatile uint32_t CR1;
+  volatile uint32_t CR2;
+  volatile uint32_t SR;
+  volatile uint32_t DR;
+  volatile uint32_t CRCPR;
+  volatile uint32_t RXCRCR;
+  volatile uint32_t TXCRCR;
+  volatile uint32_t I2SCFGR;
+  volatile uint32_t I2SPR;
+} SPI_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t CR1;
+  volatile uint32_t CR2;
+  volatile uint32_t OAR1;
+  volatile uint32_t OAR2;
+  volatile uint32_t DR;
+  volatile uint32_t SR1;
+  volatile uint32_t SR2;
+  volatile uint32_t CCR;
+  volatile uint32_t TRISE;
+} I2C_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t SR;
+  volatile uint32_t CR1;
+  volatile uint32_t CR2;
+  volatile uint32_t SMPR1;
+  volatile uint32_t SMPR2;
+  volatile uint32_t JOFR1;
+  volatile uint32_t JOFR2;
+  volatile uint32_t JOFR3;
+  volatile uint32_t JOFR4;
+  volatile uint32_t HTR;
+  volatile uint32_t LTR;
+  volatile uint32_t SQR1;
+  volatile uint32_t SQR2;
+  volatile uint32_t SQR3;
+  volatile uint32_t JSQR;
+  volatile uint32_t JDR1;
+  volatile uint32_t JDR2;
+  volatile uint32_t JDR3;
+  volatile uint32_t JDR4;
+  volatile uint32_t DR;
+} ADC_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t KR;
+  volatile uint32_t PR;
+  volatile uint32_t RLR;
+  volatile uint32_t SR;
+} IWDG_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t CR;
+  volatile uint32_t CFR;
+  volatile uint32_t SR;
+} WWDG_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t CRH;
+  volatile uint32_t CRL;
+  volatile uint32_t PRLH;
+  volatile uint32_t PRLL;
+  volatile uint32_t DIVH;
+  volatile uint32_t DIVL;
+  volatile uint32_t CNTH;
+  volatile uint32_t CNTL;
+  volatile uint32_t ALRH;
+  volatile uint32_t ALRL;
+} RTC_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t CR;
+  volatile uint32_t CSR;
+} PWR_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t DR1;
+  volatile uint32_t DR2;
+  volatile uint32_t DR3;
+  volatile uint32_t DR4;
+  volatile uint32_t DR5;
+  volatile uint32_t DR6;
+  volatile uint32_t DR7;
+  volatile uint32_t DR8;
+  volatile uint32_t DR9;
+  volatile uint32_t DR10;
+  volatile uint32_t RTCCR;
+  volatile uint32_t CR;
+  volatile uint32_t CSR;
+} BKP_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t DR;
+  volatile uint32_t IDR;
+  volatile uint32_t CR;
+} CRC_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t IMR;
+  volatile uint32_t EMR;
+  volatile uint32_t RTSR;
+  volatile uint32_t FTSR;
+  volatile uint32_t SWIER;
+  volatile uint32_t PR;
+} EXTI_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t EVCR;
+  volatile uint32_t MAPR;
+  volatile uint32_t EXTICR[4];
+  volatile uint32_t RESERVED0;
+  volatile uint32_t MAPR2;  
+} AFIO_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t CCR;
+  volatile uint32_t CNDTR;
+  volatile uint32_t CPAR;
+  volatile uint32_t CMAR;
+  volatile uint32_t RESERVED;
+} DMA_Channel_TypeDef;
+
+typedef struct
+{
+  volatile uint32_t ISR;
+  volatile uint32_t IFCR;
+  DMA_Channel_TypeDef Channel[7];
+} DMA_TypeDef;
+
 /* NVIC Structure */
 #define SCS_BASE            (0xE000E000UL)
 #define NVIC_BASE           (SCS_BASE +  0x0100UL)
@@ -152,6 +306,17 @@ typedef struct
   volatile uint32_t STIR;                   /*!< Offset: 0xE00 ( /W)  Software Trigger Interrupt Register */
 }  NVIC_Type;
 
+/* SysTick Structure */
+#define SYSTICK_BASE        (SCS_BASE +  0x0010UL)
+
+typedef struct
+{
+  volatile uint32_t CTRL;                   /*!< Offset: 0x000 (R/W)  SysTick Control and Status Register */
+  volatile uint32_t LOAD;                   /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register */
+  volatile uint32_t VAL;                    /*!< Offset: 0x008 (R/W)  SysTick Current Value Register */
+  volatile uint32_t CALIB;                  /*!< Offset: 0x00C (R/ )  SysTick Calibration Register */
+} SysTick_Type;
+
 /*
  * =================================================================================
  * Peripheral definitions
@@ -172,7 +337,24 @@ typedef struct
 #define USART1   ((USART_TypeDef *) USART1_BASE)
 #define USART2   ((USART_TypeDef *) USART2_BASE)
 #define USART3   ((USART_TypeDef *) USART3_BASE)
+#define SPI1     ((SPI_TypeDef *) SPI1_BASE)
+#define SPI2     ((SPI_TypeDef *) SPI2_BASE)
+#define I2C1     ((I2C_TypeDef *) I2C1_BASE)
+#define I2C2     ((I2C_TypeDef *) I2C2_BASE)
+#define ADC1     ((ADC_TypeDef *) ADC1_BASE)
+#define ADC2     ((ADC_TypeDef *) ADC2_BASE)
+#define IWDG     ((IWDG_TypeDef *) IWDG_BASE)
+#define WWDG     ((WWDG_TypeDef *) WWDG_BASE)
+#define RTC      ((RTC_TypeDef *) RTC_BASE)
+#define PWR      ((PWR_TypeDef *) PWR_BASE)
+#define BKP      ((BKP_TypeDef *) BKP_BASE)
+#define CRC      ((CRC_TypeDef *) CRC_BASE)
+#define EXTI     ((EXTI_TypeDef *) EXTI_BASE)
+#define AFIO     ((AFIO_TypeDef *) AFIO_BASE)
+#define DMA1     ((DMA_TypeDef *) DMA1_BASE)
+#define DMA2     ((DMA_TypeDef *) DMA2_BASE)
 #define NVIC     ((NVIC_Type      *)     NVIC_BASE     )
+#define SysTick  ((SysTick_Type   *)     SYSTICK_BASE  )
 
 /*
  * =================================================================================
