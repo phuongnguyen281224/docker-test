@@ -230,10 +230,12 @@ void TIM_IRQHandler(TIM_Handle_t *pTIMHandle) {
 }
 
 __attribute__((weak)) void TIM_PeriodElapsedCallback(TIM_Handle_t *pTIMHandle) {
+    (void)pTIMHandle;
     // Weak implementation
 }
 
 __attribute__((weak)) void TIM_IC_CaptureCallback(TIM_Handle_t *pTIMHandle) {
+    (void)pTIMHandle;
     // Weak implementation
 }
 

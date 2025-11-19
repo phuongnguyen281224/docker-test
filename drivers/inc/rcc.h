@@ -1,59 +1,7 @@
 #ifndef RCC_H
 #define RCC_H
 
-#include <stdint.h>
-
-/*
- * =================================================================================
- * Base addresses for peripherals
- * =================================================================================
- */
-#define RCC_BASE              0x40021000U
-#define FLASH_BASE            0x40022000U
-
-
-/*
- * =================================================================================
- * Peripheral register definition structures
- * =================================================================================
- */
-
-// RCC register map
-typedef struct {
-    volatile uint32_t CR;
-    volatile uint32_t CFGR;
-    volatile uint32_t CIR;
-    volatile uint32_t APB2RSTR;
-    volatile uint32_t APB1RSTR;
-    volatile uint32_t AHBENR;
-    volatile uint32_t APB2ENR;
-    volatile uint32_t APB1ENR;
-    volatile uint32_t BDCR;
-    volatile uint32_t CSR;
-} RCC_RegDef_t;
-
-// Flash register map
-typedef struct {
-    volatile uint32_t ACR;
-    volatile uint32_t KEYR;
-    volatile uint32_t OPTKEYR;
-    volatile uint32_t SR;
-    volatile uint32_t CR;
-    volatile uint32_t AR;
-    volatile uint32_t OBR;
-    volatile uint32_t WRPR;
-} FLASH_RegDef_t;
-
-
-/*
- * =================================================================================
- * Peripheral definitions
- * =================================================================================
- */
-
-#define RCC    ((RCC_RegDef_t*)RCC_BASE)
-#define FLASH  ((FLASH_RegDef_t*)FLASH_BASE)
-
+#include "stm32f1xx.h"
 
 /*
  * =================================================================================
@@ -63,5 +11,31 @@ typedef struct {
 
 void SystemClock_Config(void);
 
+// Peripheral Clock Control
+void RCC_APB2PeriphClockCmd(uint32_t RCC_APB2Periph, uint8_t NewState);
+void RCC_APB1PeriphClockCmd(uint32_t RCC_APB1Periph, uint8_t NewState);
+
+// Macros for APB2 Peripherals
+#define RCC_APB2Periph_AFIO      (1 << 0)
+#define RCC_APB2Periph_GPIOA     (1 << 2)
+#define RCC_APB2Periph_GPIOB     (1 << 3)
+#define RCC_APB2Periph_GPIOC     (1 << 4)
+#define RCC_APB2Periph_GPIOD     (1 << 5)
+#define RCC_APB2Periph_GPIOE     (1 << 6)
+#define RCC_APB2Periph_ADC1      (1 << 9)
+#define RCC_APB2Periph_ADC2      (1 << 10)
+#define RCC_APB2Periph_TIM1      (1 << 11)
+#define RCC_APB2Periph_SPI1      (1 << 12)
+#define RCC_APB2Periph_USART1    (1 << 14)
+
+// Macros for APB1 Peripherals
+#define RCC_APB1Periph_TIM2      (1 << 0)
+#define RCC_APB1Periph_TIM3      (1 << 1)
+#define RCC_APB1Periph_TIM4      (1 << 2)
+#define RCC_APB1Periph_USART2    (1 << 17)
+#define RCC_APB1Periph_USART3    (1 << 18)
+#define RCC_APB1Periph_I2C1      (1 << 21)
+#define RCC_APB1Periph_I2C2      (1 << 22)
+#define RCC_APB1Periph_SPI2      (1 << 14)
 
 #endif // RCC_H

@@ -10,26 +10,38 @@ The current example code blinks the onboard LED connected to pin PC13.
 
 ### Prerequisites
 
-*   [Docker](https://docs.docker.com/get-docker/) installed on your system.
+*   [Docker Desktop](https://docs.docker.com/get-docker/) installed and running on your system.
+
+### Project Structure
+
+*   `drivers/inc/stm32f1xx.h`: Main header file with register definitions.
+*   `drivers/src/`: Source files for peripheral drivers (RCC, GPIO, etc.).
+*   `src/`: Main application source code.
 
 ### Quick Build
 
-This project includes a convenient script to automate the entire build process.
+This project includes convenient scripts to automate the entire build process for different operating systems.
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone <repository_url>
-    cd <repository_name>
+#### Windows
+
+1.  **Run the Build Script:**
+    Double-click on `run_build.bat` or run it from Command Prompt/PowerShell.
+    ```cmd
+    run_build.bat
     ```
 
-2.  **Run the Build Script:**
-    Open a terminal in the project's root directory and execute the `run_build.sh` script. This command will automatically start the Docker environment and compile the project.
+#### macOS / Linux
+
+1.  **Run the Build Script:**
+    Open a terminal in the project's root directory and execute the `run_build.sh` script.
     ```bash
+    chmod +x run_build.sh
     ./run_build.sh
     ```
 
-3.  **Find the Output Files:**
-    The compiled firmware files (`.hex`, `.bin`, `.elf`) will be located in the `build/` directory. You can now use a tool like OpenOCD or ST-Link to flash the firmware to your STM32F103C8T6 board.
+### Output
+
+The compiled firmware files (`.hex`, `.bin`, `.elf`) will be located in the `build/` directory. You can use tools like OpenOCD or ST-Link Utility to flash the firmware.
 
 ---
 
@@ -37,23 +49,35 @@ This project includes a convenient script to automate the entire build process.
 
 ### Yêu Cầu
 
-*   Đã cài đặt [Docker](https://docs.docker.com/get-docker/) trên máy tính của bạn.
+*   Đã cài đặt và bật [Docker Desktop](https://docs.docker.com/get-docker/) trên máy tính của bạn.
 
-### Xây Dựng Nhanh
+### Cấu Trúc Dự Án
 
-Dự án này bao gồm một script tiện lợi để tự động hóa toàn bộ quá trình xây dựng.
+*   `drivers/inc/stm32f1xx.h`: File header chính chứa định nghĩa các thanh ghi.
+*   `drivers/src/`: Mã nguồn các driver ngoại vi (RCC, GPIO,...).
+*   `src/`: Mã nguồn chính của ứng dụng.
 
-1.  **Clone Repository:**
-    ```bash
-    git clone <repository_url>
-    cd <repository_name>
+### Xây Dựng Nhanh (Quick Build)
+
+Dự án cung cấp các script để tự động hóa quá trình build trên các hệ điều hành khác nhau.
+
+#### Windows
+
+1.  **Chạy Script:**
+    Nhấn đúp chuột vào file `run_build.bat` hoặc chạy từ Command Prompt.
+    ```cmd
+    run_build.bat
     ```
 
-2.  **Chạy Script Xây Dựng:**
-    Mở một terminal trong thư mục gốc của dự án và thực thi script `run_build.sh`. Lệnh này sẽ tự động khởi chạy môi trường Docker và biên dịch dự án.
+#### macOS / Linux (Ubuntu)
+
+1.  **Chạy Script:**
+    Mở terminal tại thư mục dự án và chạy lệnh:
     ```bash
+    chmod +x run_build.sh
     ./run_build.sh
     ```
 
-3.  **Tìm Các File Output:**
-    Các file firmware đã được biên dịch (`.hex`, `.bin`, `.elf`) sẽ nằm trong thư mục `build/`. Bây giờ bạn có thể sử dụng một công cụ như OpenOCD hoặc ST-Link để nạp firmware vào board STM32F103C8T6 của bạn.
+### Kết Quả
+
+Các file firmware đã biên dịch (`.hex`, `.bin`, `.elf`) sẽ nằm trong thư mục `build/`. Bạn có thể dùng OpenOCD hoặc ST-Link Utility để nạp code.

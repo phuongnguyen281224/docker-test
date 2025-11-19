@@ -1,68 +1,7 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include <stdint.h>
-
-/*
- * =================================================================================
- * Base addresses for peripherals
- * =================================================================================
- */
-#define PERIPH_BASE           0x40000000U
-#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000U)
-
-#define GPIOA_BASE            (APB2PERIPH_BASE + 0x0800U)
-#define GPIOB_BASE            (APB2PERIPH_BASE + 0x0C00U)
-#define GPIOC_BASE            (APB2PERIPH_BASE + 0x1000U)
-#define GPIOD_BASE            (APB2PERIPH_BASE + 0x1400U)
-
-#define RCC_BASE              0x40021000U
-
-/*
- * =================================================================================
- * Peripheral register definition structures
- * =================================================================================
- */
-
-// GPIO register map
-typedef struct {
-    volatile uint32_t CRL;  // Port configuration register low
-    volatile uint32_t CRH;  // Port configuration register high
-    volatile uint32_t IDR;  // Port input data register
-    volatile uint32_t ODR;  // Port output data register
-    volatile uint32_t BSRR; // Port bit set/reset register
-    volatile uint32_t BRR;  // Port bit reset register
-    volatile uint32_t LCKR; // Port configuration lock register
-} GPIO_RegDef_t;
-
-// RCC register map
-typedef struct {
-    volatile uint32_t CR;
-    volatile uint32_t CFGR;
-    volatile uint32_t CIR;
-    volatile uint32_t APB2RSTR;
-    volatile uint32_t APB1RSTR;
-    volatile uint32_t AHBENR;
-    volatile uint32_t APB2ENR;
-    volatile uint32_t APB1ENR;
-    volatile uint32_t BDCR;
-    volatile uint32_t CSR;
-} RCC_RegDef_t;
-
-
-/*
- * =================================================================================
- * Peripheral definitions (Peripheral base addresses typecasted to xxx_RegDef_t)
- * =================================================================================
- */
-
-#define GPIOA  ((GPIO_RegDef_t*)GPIOA_BASE)
-#define GPIOB  ((GPIO_RegDef_t*)GPIOB_BASE)
-#define GPIOC  ((GPIO_RegDef_t*)GPIOC_BASE)
-#define GPIOD  ((GPIO_RegDef_t*)GPIOD_BASE)
-
-#define RCC    ((RCC_RegDef_t*)RCC_BASE)
-
+#include "stm32f1xx.h"
 
 /*
  * =================================================================================
@@ -145,14 +84,6 @@ typedef struct {
 #define GPIO_SPEED_50MHZ          3 // Output mode, max speed 50 MHz
 
 
-// Generic Macros
-#define ENABLE 1
-#define DISABLE 0
-#define SET ENABLE
-#define RESET DISABLE
-#define GPIO_PIN_SET   SET
-#define GPIO_PIN_RESET RESET
-
 /*
  * =================================================================================
  * Function Prototypes for GPIO Driver
@@ -164,7 +95,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnOrDi);
 
 // Initialization and De-initialization
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
-void GPIO_DeInit(GPIO_RegDef_t *pGPIOx); // Note: STM32F1 doesn't have peripheral reset registers for GPIO, this will be a conceptual reset.
+void GPIO_DeInit(GPIO_RegDef_t *pGPIOx);
 
 // Data Read and Write
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);

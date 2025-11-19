@@ -19,7 +19,7 @@ set(CMAKE_C_FLAGS "${COMMON_FLAGS} -g3 -Wall -Wextra -Wpedantic -std=gnu11" CACH
 set(CMAKE_ASM_FLAGS "${COMMON_FLAGS} -g3" CACHE INTERNAL "ASM compiler flags")
 
 # Set linker flags
-set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/linker.ld")
+set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/linker/linker.ld")
 set(CMAKE_EXE_LINKER_FLAGS "-nostdlib --specs=nosys.specs -Wl,-Map=${PROJECT_NAME}.map -Wl,--gc-sections -T ${LINKER_SCRIPT} ${COMMON_FLAGS}" CACHE INTERNAL "Linker flags")
 
 # Set build type defaults

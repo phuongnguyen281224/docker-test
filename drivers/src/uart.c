@@ -97,6 +97,7 @@ void UART_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority) {
 }
 
 void UART_IRQHandler(UART_Handle_t *pUARTHandle) {
+    (void)pUARTHandle;
     // Implement generic IRQ handling if needed (e.g. ring buffer)
     // For now, just a placeholder or basic callback
 }

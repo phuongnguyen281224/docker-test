@@ -83,9 +83,11 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
         } else { // GPIO_MODE_IN_PU_PD
             // CNF = 10, MODE = 00 (Pull-up/Pull-down)
             temp = 0x08;
-            // Note: The actual pull-up/pull-down is set via ODR register
-            // For simplicity, we assume user will set ODR separately if needed.
-            // For pull-up: Set ODR bit to 1. For pull-down: Set ODR bit to 0.
+            
+            // Handle Pull-up / Pull-down
+            // Note: The user must set the ODR bit manually for PU/PD selection
+            // or we can add a field in GPIO_PinConfig_t for PU/PD selection.
+            // For now, we keep it simple as per original code, but ensure ODR is not accidentally modified here.
         }
     } else { // Output Modes
         temp = speed; // Set speed (MODE bits)
@@ -120,11 +122,19 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
  *                      We will reset the configuration registers to their default state.
  */
 void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) {
-    pGPIOx->CRL = 0x44444444;
-    pGPIOx->CRH = 0x44444444;
-    pGPIOx->ODR = 0x00000000;
-    pGPIOx->BSRR = 0x00000000;
-    pGPIOx->BRR = 0x00000000;
+    if (pGPIOx == GPIOA) {
+        RCC->APB2RSTR |= (1 << 2);
+        RCC->APB2RSTR &= ~(1 << 2);
+    } else if (pGPIOx == GPIOB) {
+        RCC->APB2RSTR |= (1 << 3);
+        RCC->APB2RSTR &= ~(1 << 3);
+    } else if (pGPIOx == GPIOC) {
+        RCC->APB2RSTR |= (1 << 4);
+        RCC->APB2RSTR &= ~(1 << 4);
+    } else if (pGPIOx == GPIOD) {
+        RCC->APB2RSTR |= (1 << 5);
+        RCC->APB2RSTR &= ~(1 << 5);
+    }
 }
 
 /*********************************************************************

@@ -1,4 +1,4 @@
-#include "stm32f10x.h"
+#include "stm32f1xx.h"
 #include "gpio.h"
 #include "rcc.h"
 #include "timer.h"
