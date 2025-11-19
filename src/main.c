@@ -3,22 +3,13 @@
 #include "rcc.h"
 #include "timer.h"
 #include "uart.h"
+#include "systick.h"
 #include <string.h>
 
 // Global Handles
-TIM_Handle_t htim2;
 UART_Handle_t huart1;
 
 void SystemClock_Config(void); // Defined in rcc.c (assumed) or we rely on default
-
-void delay_ms(uint32_t ms) {
-    for (uint32_t i = 0; i < ms; i++) {
-        // Clear flag
-        htim2.pTIMx->SR &= ~TIM_SR_UIF;
-        // Wait for update event
-        while (!(htim2.pTIMx->SR & TIM_SR_UIF));
-    }
-}
 
 int main(void) {
     // 1. System Clock Config
@@ -26,6 +17,9 @@ int main(void) {
     // For now, we assume 72MHz or default HSI. If default HSI (8MHz), prescalers need adjustment.
     // Let's assume the user has a startup file that calls SystemInit.
     
+    // Initialize SysTick for delay_ms (assuming 72MHz clock)
+    SysTick_Init(72000000);
+
     // 2. GPIO Init
     GPIO_Handle_t GpioLed, GpioUartTx, GpioUartRx;
 
@@ -49,13 +43,7 @@ int main(void) {
     GpioUartRx.PinConfig.GPIO_PinMode = GPIO_MODE_IN_FLOATING;
     GPIO_Init(&GpioUartRx);
 
-    // 3. Timer Init (TIM2) for Delay
-    htim2.pTIMx = TIM2;
-    htim2.BaseConfig.Prescaler = 71; // 72MHz -> 1MHz (Assuming 72MHz PCLK1)
-    htim2.BaseConfig.Period = 999;   // 1MHz -> 1kHz (1ms)
-    htim2.BaseConfig.CounterMode = TIM_COUNTERMODE_UP;
-    TIM_Base_Init(&htim2);
-    TIM_Base_Start(htim2.pTIMx);
+    // 3. Timer Init (TIM2) for Delay - REMOVED (Using SysTick)
 
     // 4. UART Init (UART1)
     huart1.pUSARTx = USART1;
